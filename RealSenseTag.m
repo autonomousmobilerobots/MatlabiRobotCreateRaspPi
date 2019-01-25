@@ -1,13 +1,21 @@
  function tags = RealSenseTag(serPort);
-%RealSenseTag(serPort) returns a array of tags
-%   Each row of the array is [id z x yaw]
+% tags = RealSenseTag(serPort) Finds AprilTags in the image from the
+% camera. Returns the id of the AprilTag, position in the frame of the
+% camera, and rotation about its center.
+%
+%   Camera coordinate frame is defined as:
+%       x - axis points to right
+%       y - axis points down
+%       z - axis points out of camera (depth)
+%
+%   Each row of the array is [id z x rot]
 %   
-%   id = The id of the tag
-%   z = The z-distance of the tag from the 
-%   x = The horizontal distance of the center of the tag from the center of
-%   the camera
-%   yaw = The orientation of the tag, in radians
-%   If no tag detected, return empty array
+%   id = The id number of the AprilTag
+%   z = The z-distance of the AprilTag in the camera coordinate frame
+%   x = The x-distance of the AprilTag in the camera coordinate frame
+%   rot = The orientation of the tag, in radians
+%
+%   If no tags are detected, returns an empty array
     
 %Flush Buffer    
 N = serPort.BytesAvailable();
