@@ -15,16 +15,15 @@ Distance = nan;
 try
     
 %Flush Buffer    
-N = serPort.BytesAvailable();
-while(N~=0) 
-fread(serPort,N);
-N = serPort.BytesAvailable();
-end
+flushinput(serPort);
 
 warning off
 global td
 fwrite(serPort, [142 19]);
 
+while serPort.BytesAvailable==0
+    %pause(0.1); 
+end
 Distance = fread(serPort, 1, 'int16')/1000;
 if (Distance > 32) | (Distance <-32)
     disp('Warning:  May have overflowed')

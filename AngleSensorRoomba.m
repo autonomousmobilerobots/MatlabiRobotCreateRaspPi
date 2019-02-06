@@ -13,17 +13,15 @@ AngleR = nan;
 try
    
 %Flush Buffer    
-N = serPort.BytesAvailable();
-while(N~=0) 
-fread(serPort,N);
-N = serPort.BytesAvailable();
-end
+flushinput(serPort);
 
 warning off
 global td
 
 fwrite(serPort, [142 20]);
-
+while serPort.BytesAvailable==0
+    %pause(0.1); 
+end
 AngleR = fread(serPort, 1, 'int16')*pi/180;
 pause(td)
 catch

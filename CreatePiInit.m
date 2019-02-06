@@ -22,49 +22,62 @@ function port = CreatePiInit(remoteHost)
 global td
 td = 0.015;
 
-createPort = 8865;
+CreatePort = 8865; % TCP
+DistPort = 8833; % UDP
+TagPort = 8844; % UDP
 
 % Open SSH connection to the host
 InitSSH_Connection(remoteHost);
 % Patience
 pause (3);
 
-% use TCP for control commands, buffer sized for 640x480 image
-port = tcpip(remoteHost, createPort, 'inputbuffersize', 310000);
+% use TCP for control commands and for images, buffer sized for 640x480 image
+port.create = tcpip(remoteHost, CreatePort, 'inputbuffersize', 512);
+
+% use UDP for distance and tag reading, buffer sized for 640x480 image
+port.dist = udp(remoteHost, DistPort, 'LocalPort', DistPort);
+port.tag = udp(remoteHost, TagPort, 'LocalPort', TagPort);
+
+port.dist.ReadAsyncMode = 'continuous';
+set(port.dist,'Timeout',2);
+port.dist.inputbuffersize = 512;
+
+port.tag.ReadAsyncMode = 'continuous';
+set(port.tag,'Timeout',2);
+port.tag.inputbuffersize = 512;
 
 warning off
 
 disp('Opening connection to iRobot Create...');
+	fopen(port.create);
+	pause(0.5)
+% udp ports are opened and closed in the tag and dist functions
 
-fopen(port);
-
-pause(0.5)
 %% Confirm two way connumication
 disp('Setting iRobot Create to Control Mode...');
 % Start! and see if its alive
-fwrite(port,128);
+fwrite(port.create,128);
 pause(.1)
 
 % Set the Create in Full Control mode
 % This code puts the robot in CONTROL(132) mode, which means does NOT stop 
 % when cliff sensors or wheel drops are true; can also run while plugged 
 % into charger
-fwrite(port,132);
+fwrite(port.create,132);
 pause(.1)
 
 % light LEDS
-fwrite(port,[139 25 0 128]);
+fwrite(port.create,[139 25 0 128]);
 
 % set song
-fwrite(port, [140 1 1 48 20]);
+fwrite(port.create, [140 1 1 48 20]);
 pause(0.05)
 
 % sing it
-fwrite(port, [141 1])
+fwrite(port.create, [141 1])
 
 disp('I am alive if my two outboard lights came on')
 
-% confirmation = (fread(ports.create,4))
 pause(.1)
 
 end

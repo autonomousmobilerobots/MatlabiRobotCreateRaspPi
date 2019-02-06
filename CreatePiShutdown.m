@@ -7,12 +7,15 @@ function CreatePiShutdown(serPort)
 % By: Liran 1/2019
 
  data_to_send = ('stop');
- fwrite(serPort, data_to_send);
- pause(2);
+ fwrite(serPort.create, data_to_send);
+ pause(1);
  
 try
-    fclose(serPort);
-    delete(serPort);
+    fclose(serPort.create);
+    delete(serPort.create);
+    
+    delete(serPort.dist);
+    delete(serPort.tag);
     pause(1);
 catch
     disp('WARNING:  Function did not terminate correctly.  Output may be unreliable.')

@@ -17,11 +17,11 @@ BumpFront = nan;
 try
 
 %Flush Buffer    
-N = serPort.BytesAvailable();
-while(N~=0) 
-fread(serPort,N);
-N = serPort.BytesAvailable();
-end
+% N = serPort.BytesAvailable();
+% while(N~=0) 
+% fread(serPort,N);
+% N = serPort.BytesAvailable();
+% end
 
 warning off
 global td
