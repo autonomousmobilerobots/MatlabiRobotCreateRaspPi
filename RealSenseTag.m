@@ -34,16 +34,18 @@ else
 	end
 
 	dataArr = strsplit(to_str, ' ');
-	num_tags = (size(dataArr)-1)/5;
+    size(dataArr);
+    num_tags = (size(dataArr)-1)/5;
 	num_tags = num_tags(2);
 	tags = [];
-	for i=1:num_tags
-		loopCounter = (i-1)*5+1;
+	dt = str2double(dataArr(1));
+    for i=1:num_tags
+		loopCounter = (i-1)*5+2;
 		id = str2double(dataArr(loopCounter+1));
 		x = str2double(dataArr(loopCounter+2));
 		y = str2double(dataArr(loopCounter+3));
 		yaw = str2double(dataArr(loopCounter+4));
-		temp = [id, x, y, yaw];
+		temp = [dt, id, x, y, yaw];
 		tags = [tags;temp];
 	end    
 end	

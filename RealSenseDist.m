@@ -26,7 +26,7 @@ fopen(serPort);
 % end
 warning off
 global td
-num_points = 9;
+num_points = 10; % delay + 9 distance values
 % data_to_send = uint8(strcat('dist  ',num2str(num_points), '  ', num2str(height)));
 % fwrite(serPort.cmd, data_to_send);
 
@@ -46,9 +46,10 @@ if resp == 99
 else
     %convert the response to string
     to_str = char(resp.');
+    
     %split by empty space and convert to array of data
     cell_array = strsplit(to_str, ' ');
-
+    
     depth_array = zeros(num_points, 1);
     for i=1:num_points
         depth_array(i) = str2double(cell_array(i));
