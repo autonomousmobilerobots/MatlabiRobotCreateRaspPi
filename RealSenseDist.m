@@ -1,29 +1,21 @@
-function depth_array = RealSenseDist(serPort);
-
-% RealSenseDist(serPort, num_points)returns an array of floats, each 
-% element of [depth_array] represents the depth of the point in meters,
+function depth_array = RealSenseDist(serPort)
+% RealSenseDist(serPort) returns an array of floats. The first represents
+% the time the measurement was taken. The remaining elements represent the
+% depth of the point in meters from the camera. depth of the point in meters,
 % from the camera. 
-% Requires:
-%   - [num_points] must be >= 2 and <10, is the number of points to return from 
-%   the camera, taken in regular intervals horizontally across the depth
-%   image. The first element is always the leftmost point of the image (~27
-%   degrees from center), and the last element is always the rightmost point
-%   of the image. 
-%   - [height] is the integer angle in degrees from the bottom of the
-%   depth image, must be in range [1, 40] inclusive. 
-% Note the minimum effective distance for the depth sensor is 0.15m, and
+%   Inputs: 
+%       serPort: port to connect to RaspPi
+%   Outputs:
+%       depth_array: delay from when image was taken and depth measurement 
+%       [10 x 1] matrix of floats. depth_array(1) = delay from image taken, 
+%       depth_array(2:10) = depth to point. depth_array(2) is left most 
+%       point, depth_array(10) is right most point
+%
+% Note the minimum effective distance for the depth sensor is 0.175m, and
 % the maximum effective distance is ~10 meters. 
     
 fopen(serPort);
 
-% if num_points>9 || num_points<2
-    % disp('Invalid number of points, must be between 2 and 9 (inclusive)');
-    % return;
-% end
-% if height<1 || height>40
-    % disp('Invalid height in image, must be between 1 and 40 (inclusive)');
-    % return;
-% end
 warning off
 global td
 num_points = 10; % delay + 9 distance values

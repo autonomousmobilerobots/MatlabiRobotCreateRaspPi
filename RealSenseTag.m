@@ -1,7 +1,8 @@
  function tags = RealSenseTag(serPort)
 %RealSenseTag(serPort) returns a array of tags
-%   Each row of the array is [id z x yaw]
+%   Each row of the array is [dt id z x yaw]
 %   
+%   dt = delay from when the image was taken
 %   id = The id of the tag
 %   z = The z-distance of the tag from the 
 %   x = The horizontal distance of the center of the tag from the center of
