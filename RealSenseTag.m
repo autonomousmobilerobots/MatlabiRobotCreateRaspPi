@@ -1,14 +1,19 @@
  function tags = RealSenseTag(serPort)
-%RealSenseTag(serPort) returns a array of tags
-%   Each row of the array is [dt id z x yaw]
+%RealSenseTag(serPort) returns an array of tags
+%   Each row of the array is [dt id x y rot]
 %   
+%   The sensor frame is defined as x pointing out of the camera (the normal
+%   of the front of the camera) and y to the left
+%
 %   dt = delay from when the image was taken
 %   id = The id of the tag
-%   z = The z-distance of the tag from the 
-%   x = The horizontal distance of the center of the tag from the center of
-%   the camera
-%   yaw = The orientation of the tag, in radians
-%   If no tag detected, return empty array
+%   x = The x-distance of the tag from the center of the camera (m)
+%   y = The y-distance of the tag from the center of the camera (m)
+%   rot = The rotation of the tag about the x axis (rad)
+%
+%   If no tag detected, returns an empty array
+%
+% Note: if running this in lab serPort = Ports.tag
     
 fopen(serPort);
 
@@ -41,14 +46,14 @@ else
 	tags = [];
 	dt = str2double(dataArr(1));
     for i=1:num_tags
-		loopCounter = (i-1)*5+2;
-		id = str2double(dataArr(loopCounter+1));
-		x = str2double(dataArr(loopCounter+2));
-		y = str2double(dataArr(loopCounter+3));
-		yaw = str2double(dataArr(loopCounter+4));
-		temp = [dt, id, x, y, yaw];
-		tags = [tags;temp];
-	end    
+        loopCounter = (i-1)*5+2;
+        id = str2double(dataArr(loopCounter+1));
+        x = str2double(dataArr(loopCounter+2));
+        y = str2double(dataArr(loopCounter+3));
+        yaw = str2double(dataArr(loopCounter+4));
+        temp = [dt, id, x, y, yaw];
+        tags = [tags;temp];
+    end
 end	
 
 pause(td)
