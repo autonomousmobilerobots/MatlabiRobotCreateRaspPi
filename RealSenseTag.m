@@ -14,19 +14,25 @@
 %   If no tag detected, returns an empty array
 %
 % Note: if running this in lab serPort = Ports.tag
-    
+
+
+%Port should be closed. If it is open close it first 
+if (strcmp(serPort.status,'open'))
+		fclose(serPort);
+end 
+
+%Open the port	
 fopen(serPort);
 
 warning off
 global td
 
-
-%disp('waiting for response');
 while serPort.BytesAvailable==0
     %pause(0.1);
 end
 
-resp = fread(serPort, serPort.BytesAvailable); % Get response and convert to char array
+%Read packet
+resp = fread(serPort, serPort.BytesAvailable); 
 
 fclose(serPort);
 
