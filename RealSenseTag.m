@@ -11,12 +11,12 @@
 %   y = The y-distance of the tag from the center of the camera (m)
 %   rot = The rotation of the tag about the x axis (rad)
 %
-%   If no tag detected, returns only the delay
-%
+%   If no tag detected, returns an empty array
+
 % Note: if running this in lab serPort = Ports.tag
 
 
-%Port should be closed. If it is open close it first 
+% Port should be closed. If it is open close it first 
 if (strcmp(serPort.status,'open'))
 		fclose(serPort);
 end 
@@ -41,10 +41,10 @@ if resp == 99
     tags = [];
 else
 	to_str = char(resp.');
-    dataArr = strsplit(to_str, ' ');
-    dt = str2double(dataArr(1));
+        dataArr = strsplit(to_str, ' ');
+        dt = str2double(dataArr(1));
 	if strcmp(dataArr(2),'no')
-		tags = dt;
+		tags = [];
 		return
 	end
 
