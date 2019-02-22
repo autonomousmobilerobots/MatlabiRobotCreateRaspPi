@@ -11,7 +11,7 @@
 %   y = The y-distance of the tag from the center of the camera (m)
 %   rot = The rotation of the tag about the x axis (rad)
 %
-%   If no tag detected, returns an empty array
+%   If no tag detected, returns only the delay
 %
 % Note: if running this in lab serPort = Ports.tag
 
@@ -38,19 +38,20 @@ fclose(serPort);
 
 if resp == 99
     disp('No camera connected, cannot call this function')
+    tags = [];
 else
 	to_str = char(resp.');
-	if strcmp(to_str,'no tags detected')
-		tags = [];
+    dataArr = strsplit(to_str, ' ');
+    dt = str2double(dataArr(1));
+	if strcmp(dataArr(2),'no')
+		tags = dt;
 		return
 	end
 
-	dataArr = strsplit(to_str, ' ');
-    size(dataArr);
-    num_tags = (size(dataArr)-1)/5;
+	num_tags = (size(dataArr)-1)/5;
 	num_tags = num_tags(2);
 	tags = [];
-	dt = str2double(dataArr(1));
+	
     for i=1:num_tags
         loopCounter = (i-1)*5+2;
         id = str2double(dataArr(loopCounter+1));
