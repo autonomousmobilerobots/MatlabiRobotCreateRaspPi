@@ -37,6 +37,7 @@ fclose(serPort);
 
 if resp == 99
     disp('No camera connected, cannot call this function')
+    depth_array = [];
 else
     %convert the response to string
     to_str = char(resp.');
