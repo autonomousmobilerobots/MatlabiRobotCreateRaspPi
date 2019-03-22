@@ -15,6 +15,8 @@
 
 % Note: if running this in lab serPort = Ports.tag
 
+warning off
+global td
 
 % Port should be closed. If it is open close it first 
 if (strcmp(serPort.status,'open'))
@@ -24,21 +26,22 @@ end
 %Open the port	
 fopen(serPort);
 
-warning off
-global td
+%Read from port
+resp = fread(serPort); 
 
-while serPort.BytesAvailable==0
-    %pause(0.1);
-end
-
-%Read packet
-resp = fread(serPort, serPort.BytesAvailable); 
-
+%Close the port
 fclose(serPort);
+
+if serPort.ValuesReceived == 0
+    disp('No Tag data recived')
+    tags = [];
+    return
+end    
 
 if resp == 99
     disp('No camera connected, cannot call this function')
     tags = [];
+	
 else
 	to_str = char(resp.');
         dataArr = strsplit(to_str, ' ');

@@ -30,16 +30,6 @@ while serPort.BytesAvailable==0
 end
 
 BmpWheDrps = dec2bin(fread(serPort, 1),8);
-% BumpRight = bin2dec(BmpWheDrps(end));
-% BumpLeft = bin2dec(BmpWheDrps(end-1));
-% WheDropRight = bin2dec(BmpWheDrps(end-2));
-% WheDropLeft = bin2dec(BmpWheDrps(end-3));
-% WheDropCaster = bin2dec(BmpWheDrps(end-4));
-% BumpFront=(BumpRight*BumpLeft);
-% if BumpFront==1
-%     BumpRight =0;
-%     BumpLeft =0;
-% end
 
 pause(td)
 catch
@@ -58,7 +48,7 @@ try
         BumpLeft =0;
     end
 catch
-    disp('WARNING: Error here')
+    disp('WARNING: BumpsWheelDropsSensorsRoomba function did not terminate correctly.')
 end
 
 end

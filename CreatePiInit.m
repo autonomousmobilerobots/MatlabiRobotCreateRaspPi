@@ -1,14 +1,16 @@
-function port = CreatePiInit(remoteHost)
-%port = CreatePiInit(remoteHost)
-% 'port' is the tcp/ip port for commanding create
+function port = CreatePiInit(remoteHost, Tag_on, Depth_on)
+%port = CreatePiInit(remoteHost, Tag_on, Depth_on)
+% 'port' is a struct containing 3 ports:
+% port.create - TCP port for communication with the iRobot Create
+% port.tag - UDP port for tag/beacon telemetry
+% port.dist - UDP port for depth/dist telemetry
 %
-% This file initializes tcp/ip port for use with iRobot Create
-% remoteHost is the ip address of the beagleboard
-% ex. CreateBeagleInit('192.168.1.141') sets ip = '192.168.1.141'
-% copy this file along with PacketType.m into MatlabToolBoxiRobotCreate
+% 
+% remoteHost is the IP address or domain name of the Raspberry Pi
+% ex. CreatePiInit('WallE') or CreatePiInit('10.253.194.101')
 %
-% The tcp/ip server must be running on the Raspberry Pi before running this
-% code.
+% Tag_On controls tag/beacon functionality. 1 is on, 0 is off
+% Depth_On controls depth/dist functionality. 1 is on, 0 is off
 %
 % If you receive the error "Unsuccessful open: Connection refused: connect"
 % ensure that the server code is running properly on the Raspberry Pi
@@ -18,6 +20,7 @@ function port = CreatePiInit(remoteHost)
 %
 % By: Chuck Yang, ty244, 2012
 % Modified By: Alec Newport, acn55, 2018
+% Additionally modified by Liran, 2019
 
 global td
 td = 0.015;
@@ -49,9 +52,22 @@ port.tag.inputbuffersize = 512;
 warning off
 
 disp('Opening connection to iRobot Create...');
-	fopen(port.create);
-	pause(0.5)
+try
+    fopen(port.create);
+catch
+    disp('Problem opening port, stopping !');
+    port = [];
+    return
+end
+pause(0.5)
 % udp ports are opened and closed in the tag and dist functions
+
+
+% Send Init packet to Pi
+Init_packet = [Tag_on, Depth_on];
+fwrite(port.create,Init_packet);
+pause(0.5)
+
 
 %% Confirm two way connumication
 disp('Setting iRobot Create to Control Mode...');

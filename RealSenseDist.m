@@ -13,31 +13,34 @@ function depth_array = RealSenseDist(serPort)
 %
 % Note the minimum effective distance for the depth sensor is 0.175m, and
 % the maximum effective distance is ~10 meters. 
- 
-% Port should be closed. If it is open close it first 
-if (strcmp(serPort.status,'open'))
-		fclose(serPort);
-end 
-
-% Open the port	
-fopen(serPort);
 
 warning off
 global td
 num_points = 10; % delay + 9 distance values
 
-while serPort.BytesAvailable==0
-    %pause(0.1); 
-end
+% Port should be closed. If it is open close it first 
+if (strcmp(serPort.status,'open'))
+		fclose(serPort);
+end 
+% Open the port	
+fopen(serPort);
 
-%Read packet
-resp = fread(serPort, serPort.BytesAvailable);
+%Read from port
+resp = fread(serPort);
 
+% Close the port
 fclose(serPort);
+
+if serPort.ValuesReceived == 0
+    disp('No Depth data recived')
+    depth_array = [];
+    return
+end
 
 if resp == 99
     disp('No camera connected, cannot call this function')
     depth_array = [];
+	
 else
     %convert the response to string
     to_str = char(resp.');

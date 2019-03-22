@@ -1,18 +1,26 @@
 function CreatePiShutdown(Ports)
 %
-%   The object 'serPort' must first be initialized with the 
+%   The object 'Ports' must first be initialized with the 
 %   CreateBeagleInit command (available as part of the Matlab Toolbox for 
 %   the iRobot Create).
 %
 % By: Liran 1/2019
 
 % Before closing communication stop the robot in case it is moving
-SetFwdVelAngVelCreate(Ports.create, 0,0);
+try
+    SetFwdVelAngVelCreate(Ports.create, 0,0);
+catch
+    disp('Could not send stop command to robot');
+end
 pause(1);
 
 % Send stop command to terminate the loop on the Pi
 data_to_send = ('stop');
-fwrite(Ports.create, data_to_send);
+try
+    fwrite(Ports.create, data_to_send);
+catch
+    disp('Could not send stop command to the Pi');
+end    
 pause(1);
  
  
