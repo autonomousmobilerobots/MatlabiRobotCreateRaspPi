@@ -1,5 +1,7 @@
 function OverheadLocClient = Init_OverheadLocClient()
-
+    % This function initializes a NatNet Client to read streaming object tracking data
+    % from the Optitrack Motive server
+    % The NatNet SDK from Optitrack has to be in the Matlab Path
 
     % find local IP used for natnet client
     [~, result] = system('ipconfig');
