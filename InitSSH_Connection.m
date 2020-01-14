@@ -30,7 +30,6 @@ PW = 'AMRobot';
 %Str = [plink ' -l ' user ' -pw ' PW ' -t ' remoteHost, ' -m ' CommandFile];
 
 % For a single command on remote host enter it directly to the string:
-%Command = './robot';
 Command = Remote_Command;
 Str2 = ['echo yes | ' plink ' -l ' user ' -pw ' PW ' -t ' remoteHost,' ', Command];
 
