@@ -18,7 +18,7 @@ pause(1);
  % Clean up
 try
     
-    Ports.natnetclient.disconnect;
+    Ports.OL_Client.disconnect;
     
     if (strcmp(Ports.create.status,'open'))
         fclose(Ports.create);
