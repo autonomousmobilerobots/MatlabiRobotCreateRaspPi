@@ -1,10 +1,11 @@
-function InitSSH_Connection(remoteHost)
+function InitSSH_Connection(remoteHost, Remote_Command)
 
 % InitSSH_Connection(remoteHost)
 %
 % Initialize connection with the Pi and run 'robot' function
 % Will open a separate command window 
 % remoteHost is a string containing the name or IP address of the Pi
+% Remote_Command is the initial script to run on the Pi
 %
 % Example - 
 % InitSSH_Connection('WallE') or InitSSH_Connection('10.253.194.101')
@@ -15,7 +16,7 @@ function InitSSH_Connection(remoteHost)
 % Verbose for debug:
 %plink = '"C:\Program Files (x86)\PuTTY\plink.exe" -v';
 % Silent:
-plink = '"C:\Program Files (x86)\PuTTY\plink.exe"';
+plink = '"C:\Program Files\PuTTY\plink.exe"';
 
 % Log in using user:create, p/w:AMRobot
 user = 'create';
@@ -29,7 +30,8 @@ PW = 'AMRobot';
 %Str = [plink ' -l ' user ' -pw ' PW ' -t ' remoteHost, ' -m ' CommandFile];
 
 % For a single command on remote host enter it directly to the string:
-Command = './robot';
+%Command = './robot';
+Command = Remote_Command;
 Str2 = ['echo yes | ' plink ' -l ' user ' -pw ' PW ' -t ' remoteHost,' ', Command];
 
 % Call it in a separate command window

@@ -1,8 +1,7 @@
 function CreatePiShutdown(Ports)
 %
 %   The object 'serPort' must first be initialized with the 
-%   CreateBeagleInit command (available as part of the Matlab Toolbox for 
-%   the iRobot Create).
+%   CreateBeagleInit command 
 %
 % By: Liran 1/2019
 
@@ -18,6 +17,8 @@ pause(1);
  
  % Clean up
 try
+    
+    Ports.natnetclient.disconnect;
     
     if (strcmp(Ports.create.status,'open'))
         fclose(Ports.create);
