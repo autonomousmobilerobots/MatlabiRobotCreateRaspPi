@@ -1,9 +1,9 @@
 function CreatePiShutdown(Ports)
 %
 %   The object 'serPort' must first be initialized with the 
-%   CreateBeagleInit command 
+%   CreatePiInit command 
 %
-% By: Liran 1/2019
+% By: Liran 1/2019, 2020
 
 % Before closing communication stop the robot in case it is moving
 SetFwdVelAngVelCreate(Ports.create, 0,0);
